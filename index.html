@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPulse - Cuidemos a Polo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <h1>🌱 EcoPulse</h1>
+        <div class="estadisticas">
+            <span>🔥 <strong id="racha-count">0</strong> Días</span>
+            <span>❄️ <strong id="copos-count">10</strong></span>
+            <span>✅ <strong id="tareas-count">0</strong> Hechas</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Mascota -->
+        <section class="card mascota">
+            <div class="oso">
+                <!-- Oso Polar SVG Integrado -->
+                <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="60" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
+                    <ellipse cx="140" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
+                    <ellipse cx="60" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
+                    <ellipse cx="140" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
+                    <circle cx="100" cy="110" r="75" fill="#FFFFFF" stroke="#287d9b" stroke-width="4"/>
+                    <ellipse cx="100" cy="125" rx="30" ry="22" fill="#E8F4F8" stroke="#287d9b" stroke-width="3"/>
+                    <ellipse cx="100" cy="115" rx="14" ry="10" fill="#287d9b"/>
+                    <circle cx="70" cy="90" r="8" fill="#287d9b"/>
+                    <circle cx="130" cy="90" r="8" fill="#287d9b"/>
+                    <circle cx="72" cy="88" r="2.5" fill="#FFFFFF"/>
+                    <circle cx="132" cy="88" r="2.5" fill="#FFFFFF"/>
+                    <path d="M 90 132 Q 100 140 110 132" stroke="#287d9b" stroke-width="3" stroke-linecap="round" fill="none"/>
+                </svg>
+            </div>
+            <h2>Polo el Oso Polar</h2>
+            <p class="estado" id="estado-polo">¡Polo está feliz en su glaciar!</p>
+        </section>
+
+        <!-- Misión Diaria -->
+        <section class="card">
+            <h2>🌍 Misión Diaria</h2>
+            <p>Buscá un plástico en tu casa e ingresá el número del triángulo (1 al 7):</p>
+            
+            <div class="mision-input">
+                <input type="number" id="recycle-code" min="1" max="7" placeholder="Ej: 1">
+                <button id="btn-mision" onclick="iniciarTrivia()">Verificar</button>
+            </div>
+
+            <p id="feedback-mision"></p>
+
+            <!-- Bloque Trivia -->
+            <div id="bloque-trivia" style="display: none; margin-top: 15px;">
+                <p id="pregunta-trivia" style="font-weight: bold; color: #287d9b;"></p>
+                <div id="opciones-trivia" style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;"></div>
+            </div>
+        </section>
+
+        <!-- Sliding Puzzle Diario -->
+        <section class="card puzle-card">
+            <h2>🧩 Sliding Puzzle Diario (Extra Copos)</h2>
+            <p>Deslizá las fichas al espacio vacío para ordenarlas de 1 a 8 y ganá <strong>+10 Copos ❄️</strong>.</p>
+            
+            <div class="puzle-container" id="puzle-grid"></div>
+
+            <p id="puzle-status"></p>
+            <button class="btn-puzle" id="btn-resolver-puzle" onclick="iniciarPuzle()">Mezclar de Nuevo</button>
+        </section>
+
+        <!-- EcoPlato -->
+        <section class="card">
+            <h2>🥗 EcoPlato</h2>
+            <p>Ingresá los sobrantes de tu heladera y descubrí una receta rápida:</p>
+            
+            <div class="ecoplato-inputs">
+                <input type="text" id="ingrediente1" placeholder="Ingrediente 1 (ej: arroz)">
+                <input type="text" id="ingrediente2" placeholder="Ingrediente 2 (ej: tomate)">
+                <button onclick="buscarReceta()">Buscar Receta</button>
+            </div>
+
+            <div id="resultado-receta" style="margin-top: 15px;"></div>
+        </section>
+
+    </main>
+
+    
+</body>
+<script src="main.js"></script>
+</html>

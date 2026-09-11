@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #eaf6f6;
+    color: #2c3e50;
+    padding-bottom: 30px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.navbar h1 {
+    color: #238b6b;
+    font-size: 1.5rem;
+}
+
+.estadisticas {
+    display: flex;
+    gap: 15px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    background: #e8f5f2;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #287d9b;
+}
+
+/* Contenedor Principal */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tarjetas Generales */
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    text-align: center;
+}
+
+.card h2 {
+    color: #238b6b;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.card p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+/* Seccion Mascota */
+.mascota .oso {
+    margin: 10px 0;
+}
+
+.mascota .estado {
+    background: #f0fdf4;
+    color: #238b6b;
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* Inputs y Botones */
+input[type="number"], input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    width: 60%;
+    margin-right: 5px;
+}
+
+button {
+    background-color: #238b6b;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #1b6d54;
+}
+
+.mision-input, .ecoplato-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* Estilos Sliding Puzzle */
+.puzle-card {
+    text-align: center;
+}
+
+.puzle-container {
+    display: grid;
+    grid-template-columns: repeat(3, 75px);
+    grid-template-rows: repeat(3, 75px);
+    gap: 6px;
+    justify-content: center;
+    margin: 15px auto;
+    width: max-content;
+    padding: 10px;
+    background: #d4ece6;
+    border-radius: 12px;
+}
+
+.puzle-piece {
+    width: 75px;
+    height: 75px;
+    background-color: #238b6b;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s ease-in-out, background 0.2s;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.puzle-piece:hover:not(.empty) {
+    transform: scale(1.04);
+    background-color: #287d9b;
+}
+
+.puzle-piece.empty {
+    background-color: transparent;
+    border: 2px dashed #b2dfdb;
+    box-shadow: none;
+    cursor: default;
+}
+
+.btn-puzle {
+    background: #287d9b;
+}
+
+.btn-puzle:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
