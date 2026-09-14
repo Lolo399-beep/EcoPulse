@@ -214,3 +214,11 @@ button:hover {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* Animación para el minijuego 4 */
+#emoji-reciclaje {
+    transition: transform 0.3s ease;
+}
+#emoji-reciclaje:hover {
+    transform: scale(1.2) rotate(5deg);
+}

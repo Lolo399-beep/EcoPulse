@@ -128,3 +128,28 @@
     <script src="main.js"></script>
 </body>
 </html>
+
+<!-- Minijuego 4: ¿Es Reciclable o No? -->
+        <section class="card">
+            <h2>♻️ Minijuego 4: ¿Es Reciclable o No?</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿De qué trata?</strong> Te mostraremos distintos objetos. Adiviná si van a la bolsa verde (reciclables) o al tacho negro (basura).<br>
+                ⚠️ <em>Cuidado: Si te equivocás 5 veces, Polo se cansará y deberás esperar a mañana para volver a jugar.</em>
+            </p>
+            
+            <div id="pantalla-juego-reciclaje" style="margin-top: 15px; text-align: center;">
+                <button id="btn-iniciar-reciclaje" onclick="iniciarJuegoReciclaje()">Empezar a jugar</button>
+                <p id="estado-reciclaje" style="margin-top: 10px; font-weight: bold;"></p>
+                
+                <div id="zona-juego-reciclaje" style="display: none; margin-top: 20px;">
+                    <div style="font-size: 4rem; margin-bottom: 10px;" id="emoji-reciclaje">❓</div>
+                    <h3 id="palabra-reciclaje" style="color: #287d9b; margin-bottom: 20px;">Objeto</h3>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button onclick="verificarReciclaje(true)" style="background-color: #238b6b;">✅ Reciclable</button>
+                        <button onclick="verificarReciclaje(false)" style="background-color: #c0392b;">❌ No Reciclable</button>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">Errores permitidos: <span id="vidas-reciclaje" style="color: #e74c3c; font-weight: bold;">5</span></p>
+                </div>
+            </div>
+        </section>

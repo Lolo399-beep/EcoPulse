@@ -265,3 +265,91 @@ function verificarVictoriaSliding() {
 
 // Cargar puzle al iniciar la página
 document.addEventListener('DOMContentLoaded', iniciarPuzle);
+
+// --- Minijuego 4: ¿Es Reciclable o No? ---
+const baseDatosReciclaje = [
+    // Reciclables
+    { emoji: "🍾", palabra: "Botella descorchándose (Vidrio)", esReciclable: true },
+    { emoji: "🍷", palabra: "Copa de vino limpia", esReciclable: true },
+    { emoji: "📦", palabra: "Paquete (Cartón)", esReciclable: true },
+    { emoji: "📰", palabra: "Periódico", esReciclable: true },
+    { emoji: "📝", palabra: "Cuaderno de notas (sin espiral)", esReciclable: true },
+    { emoji: "🛍️", palabra: "Bolsa de papel", esReciclable: true },
+    { emoji: "🥫", palabra: "Comida enlatada (limpia)", esReciclable: true },
+    { emoji: "🥤", palabra: "Vaso plástico duro / PET", esReciclable: true },
+    // No Reciclables
+    { emoji: "🧻", palabra: "Rollo de papel / Servilletas sucias", esReciclable: false },
+    { emoji: "🍼", palabra: "Pañales", esReciclable: false },
+    { emoji: "🍕", palabra: "Caja de pizza manchada con aceite", esReciclable: false },
+    { emoji: "☕", palabra: "Taza de café descartable (con plástico interior)", esReciclable: false },
+    { emoji: "🪥", palabra: "Cepillo de dientes", esReciclable: false },
+    { emoji: "🛍️", palabra: "Bolsa de plástico fina (tipo supermercado)", esReciclable: false },
+    { emoji: "🍽️", palabra: "Plato de cerámica roto", esReciclable: false },
+    { emoji: "🪞", palabra: "Espejo roto", esReciclable: false },
+    { emoji: "💡", palabra: "Bombilla vieja", esReciclable: false },
+    { emoji: "🧸", palabra: "Oso de peluche", esReciclable: false },
+    { emoji: "💻", palabra: "Notebook vieja (Requiere punto especial, no tacho verde)", esReciclable: false }
+];
+
+let erroresCometidos = 0;
+let objetoActual = null;
+const MAX_ERRORES = 5;
+
+// Verificamos si el jugador fue bloqueado previamente hoy
+function verificarBloqueoReciclaje() {
+    const fechaBloqueo = localStorage.getItem('ecoBloqueoReciclaje');
+    const hoy = new Date().toLocaleDateString();
+    
+    if (fechaBloqueo === hoy) {
+        document.getElementById('btn-iniciar-reciclaje').style.display = 'none';
+        document.getElementById('estado-reciclaje').innerHTML = '<span style="color: #c0392b;">Has fallado 5 veces. ¡Polo necesita descansar! Volvé a intentarlo mañana. 🐻‍❄️💤</span>';
+        return true;
+    }
+    return false;
+}
+
+function iniciarJuegoReciclaje() {
+    if (verificarBloqueoReciclaje()) return;
+
+    erroresCometidos = 0;
+    document.getElementById('vidas-reciclaje').innerText = MAX_ERRORES - erroresCometidos;
+    document.getElementById('btn-iniciar-reciclaje').style.display = 'none';
+    document.getElementById('zona-juego-reciclaje').style.display = 'block';
+    document.getElementById('estado-reciclaje').innerText = '';
+    
+    cargarNuevoObjeto();
+}
+
+function cargarNuevoObjeto() {
+    const indiceAleatorio = Math.floor(Math.random() * baseDatosReciclaje.length);
+    objetoActual = baseDatosReciclaje[indiceAleatorio];
+    
+    document.getElementById('emoji-reciclaje').innerText = objetoActual.emoji;
+    document.getElementById('palabra-reciclaje').innerText = objetoActual.palabra;
+}
+
+function verificarReciclaje(respuestaJugador) {
+    const estado = document.getElementById('estado-reciclaje');
+    
+    if (respuestaJugador === objetoActual.esReciclable) {
+        sumarRecompensa(1); // Gana 1 copo por acierto
+        estado.innerHTML = `<span style="color: #238b6b;">¡Correcto! +1 ❄️</span>`;
+        cargarNuevoObjeto();
+    } else {
+        erroresCometidos++;
+        const vidasRestantes = MAX_ERRORES - erroresCometidos;
+        document.getElementById('vidas-reciclaje').innerText = vidasRestantes;
+        
+        if (vidasRestantes <= 0) {
+            localStorage.setItem('ecoBloqueoReciclaje', new Date().toLocaleDateString());
+            document.getElementById('zona-juego-reciclaje').style.display = 'none';
+            estado.innerHTML = '<span style="color: #c0392b;">¡Te quedaste sin intentos! Polo está triste. Volvé mañana para repasar. 🧊</span>';
+        } else {
+            estado.innerHTML = `<span style="color: #c0392b;">¡Ups! Eso no iba ahí. Te quedan ${vidasRestantes} intentos.</span>`;
+            cargarNuevoObjeto();
+        }
+    }
+}
+
+// Comprobar bloqueo al cargar la página
+document.addEventListener('DOMContentLoaded', verificarBloqueoReciclaje);
