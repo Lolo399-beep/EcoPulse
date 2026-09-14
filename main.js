@@ -93,24 +93,46 @@ function responderTrivia(opcionElegida) {
     }
 }
 
-// --- Lógica de EcoPlato ---
+// --- Lógica de EcoPlato (Múltiples Ingredientes) ---
 const recetas = [
     { ingredientes: ["tomate", "arroz"], nombre: "Arroz Salteado con Tomate", pasos: "Salteá el tomate, sumá el arroz frío y mezclá por 3 min." },
     { ingredientes: ["pan", "leche"], nombre: "Budín de Pan Express", pasos: "Remojá el pan en leche tibia, agregá azúcar y doralo a la sartén." },
-    { ingredientes: ["papas", "huevo"], nombre: "Tortilla de Papas Cero Desperdicio", pasos: "Cortá las papas cocidas y unilas con huevo batido." }
+    { ingredientes: ["papas", "huevo"], nombre: "Tortilla de Papas Cero Desperdicio", pasos: "Cortá las papas cocidas y unilas con huevo batido." },
+    { ingredientes: ["zanahoria", "huevo"], nombre: "Buñuelos Rápidos de Zanahoria", pasos: "Rallá la zanahoria, mezclala con huevo batido y un poco de harina, y cociná a la sartén." },
+    { ingredientes: ["fideos", "queso"], nombre: "Fideos Salteados con Queso", pasos: "Mezclá los fideos que sobraron con queso rallado o en hebras y calentalos a fuego lento." },
+    { ingredientes: ["atún", "arroz", "choclo"], nombre: "Ensalada Completa de Atún", pasos: "Mezclá el arroz cocido con atún, choclo y un hilo de aceite de oliva." }
 ];
 
+function agregarCampoIngrediente() {
+    const contenedor = document.getElementById('contenedor-ingredientes');
+    const nuevaFila = document.createElement('div');
+    nuevaFila.className = 'input-row';
+    
+    nuevaFila.innerHTML = `
+        <input type="text" class="input-ingrediente" list="lista-ingredientes" placeholder="Otro ingrediente" autocomplete="off">
+        <button type="button" class="btn-eliminar" onclick="this.parentElement.remove()">✕</button>
+    `;
+    
+    contenedor.appendChild(nuevaFila);
+}
+
 function buscarReceta() {
-    const ing1 = document.getElementById('ingrediente1').value.toLowerCase().trim();
-    const ing2 = document.getElementById('ingrediente2').value.toLowerCase().trim();
+    const inputs = document.querySelectorAll('.input-ingrediente');
+    const ingredientesIngresados = Array.from(inputs)
+        .map(input => input.value.toLowerCase().trim())
+        .filter(val => val !== "");
+
     const contenedor = document.getElementById('resultado-receta');
 
-    if (!ing1) {
-        contenedor.innerHTML = '<p style="color: #c0392b;">Poné al menos un ingrediente.</p>';
+    if (ingredientesIngresados.length === 0) {
+        contenedor.innerHTML = '<p style="color: #c0392b;">Ingresá al menos un ingrediente.</p>';
         return;
     }
 
-    const hallada = recetas.find(r => r.ingredientes.includes(ing1) || (ing2 && r.ingredientes.includes(ing2)));
+    // Buscar receta que contenga al menos uno de los ingredientes ingresados
+    const hallada = recetas.find(r => 
+        r.ingredientes.some(ing => ingredientesIngresados.includes(ing))
+    );
 
     if (hallada) {
         contenedor.innerHTML = `
@@ -121,7 +143,7 @@ function buscarReceta() {
             </div>
         `;
     } else {
-        contenedor.innerHTML = '<p style="color: #397267;">💡 <strong>Idea rápida:</strong> Cortá los ingredientes y saltealos en sartén con un chorrito de aceite.</p>';
+        contenedor.innerHTML = '<p style="color: #397267;">💡 <strong>Idea rápida:</strong> Mezclá tus ingredientes en una sartén con un chorrito de aceite o saltealos al horno.</p>';
     }
 }
 
@@ -159,13 +181,11 @@ function iniciarPuzle() {
         return;
     }
 
-    // Generar estado resoluble mezclando desde la solución
     tableroActual = [...ordenGanador];
     let movimientosAleatorios = 30;
     while (movimientosAleatorios > 0) {
         const adyacentes = getAdyacentes(tableroActual.indexOf(0));
         const azar = adyacentes[Math.floor(Math.random() * adyacentes.length)];
-        // Intercambiar
         tableroActual[tableroActual.indexOf(0)] = tableroActual[azar];
         tableroActual[azar] = 0;
         movimientosAleatorios--;
@@ -200,10 +220,10 @@ function getAdyacentes(indexZero) {
     const fila = Math.floor(indexZero / 3);
     const col = indexZero % 3;
 
-    if (fila > 0) adyacentes.push(indexZero - 3); // Arriba
-    if (fila < 2) adyacentes.push(indexZero + 3); // Abajo
-    if (col > 0) adyacentes.push(indexZero - 1);  // Izquierda
-    if (col < 2) adyacentes.push(indexZero + 1);  // Derecha
+    if (fila > 0) adyacentes.push(indexZero - 3);
+    if (fila < 2) adyacentes.push(indexZero + 3);
+    if (col > 0) adyacentes.push(indexZero - 1);
+    if (col < 2) adyacentes.push(indexZero + 1);
 
     return adyacentes;
 }
@@ -212,7 +232,6 @@ function intentarMover(indexPieza) {
     const indexZero = tableroActual.indexOf(0);
     const adyacentes = getAdyacentes(indexZero);
 
-    // Solo se mueve si está adyacente al 0
     if (adyacentes.includes(indexPieza)) {
         tableroActual[indexZero] = tableroActual[indexPieza];
         tableroActual[indexPieza] = 0;
@@ -245,4 +264,4 @@ function verificarVictoriaSliding() {
 }
 
 // Cargar puzle al iniciar la página
-document.addEventListener('DOMContentLoaded', iniciarPuzle)
+document.addEventListener('DOMContentLoaded', iniciarPuzle);

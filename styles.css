@@ -88,8 +88,7 @@ input[type="number"], input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 8px;
     outline: none;
-    width: 60%;
-    margin-right: 5px;
+    width: 100%;
 }
 
 button {
@@ -107,11 +106,55 @@ button:hover {
     background-color: #1b6d54;
 }
 
-.mision-input, .ecoplato-inputs {
+.btn-secundario {
+    background-color: #287d9b;
+}
+
+.btn-secundario:hover {
+    background-color: #1f6179;
+}
+
+.mision-input {
     display: flex;
     justify-content: center;
     gap: 8px;
     margin-top: 10px;
+}
+
+.mision-input input {
+    width: 60%;
+}
+
+/* Estilos EcoPlato */
+.ecoplato-inputs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto 15px auto;
+}
+
+.input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+}
+
+.ecoplato-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 /* Estilos Sliding Puzzle */

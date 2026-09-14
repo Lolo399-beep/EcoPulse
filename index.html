@@ -43,11 +43,15 @@
             <p class="estado" id="estado-polo">¡Polo está feliz en su glaciar!</p>
         </section>
 
-        <!-- Misión Diaria -->
+        <!-- Misión Diaria: Minijuego 1 -->
         <section class="card">
-            <h2>🌍 Misión Diaria</h2>
-            <p>Buscá un plástico en tu casa e ingresá el número del triángulo (1 al 7):</p>
+            <h2>🌍 Minijuego 1: El Triángulo del 1 al 7</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿Qué es el triángulo 1-7?</strong> Los números dentro del triángulo de reciclaje (Código de Identificación de Resinas del 1 al 7) indican el tipo de plástico del que está hecho un envase (como PET, HDPE, PVC, etc.) y cuán fácil o complejo es reciclarlo.<br>
+                <strong>¿Cómo se juega?</strong> Buscá un envase plástico en tu casa, identificá su número e ingresalo a continuación para resolver preguntas de <em>Verdadero/Falso</em> o <em>Multiple Choice</em> según el plástico detectado.
+            </p>
             
+            <p><strong>Buscá un plástico en tu casa e ingresá el número del triángulo (1 al 7):</strong></p>
             <div class="mision-input">
                 <input type="number" id="recycle-code" min="1" max="7" placeholder="Ej: 1">
                 <button id="btn-mision" onclick="iniciarTrivia()">Verificar</button>
@@ -62,9 +66,12 @@
             </div>
         </section>
 
-        <!-- Sliding Puzzle Diario -->
+        <!-- Sliding Puzzle Diario: Minijuego 2 -->
         <section class="card puzle-card">
-            <h2>🧩 Sliding Puzzle Diario (Extra Copos)</h2>
+            <h2>🧩 Minijuego 2: Sliding Puzzle (Ordenar las Piezas)</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿De qué trata?</strong> Es un rompecabezas deslizante. Tenés que ordenar las piezas del 1 al 8 utilizando el espacio vacío para moverlas a su posición correcta.
+            </p>
             <p>Deslizá las fichas al espacio vacío para ordenarlas de 1 a 8 y ganá <strong>+10 Copos ❄️</strong>.</p>
             
             <div class="puzle-container" id="puzle-grid"></div>
@@ -73,23 +80,51 @@
             <button class="btn-puzle" id="btn-resolver-puzle" onclick="iniciarPuzle()">Mezclar de Nuevo</button>
         </section>
 
-        <!-- EcoPlato -->
+        <!-- EcoPlato: Minijuego 3 -->
         <section class="card">
-            <h2>🥗 EcoPlato</h2>
+            <h2>🥗 Minijuego 3: EcoPlato (Recetas según tus comidas)</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿De qué trata?</strong> Una herramienta para reducir el desperdicio de alimentos. Ingresá los sobrantes o ingredientes que tenés en la heladera y el sistema te dará una receta práctica para aprovecharlos.
+            </p>
             <p>Ingresá los sobrantes de tu heladera y descubrí una receta rápida:</p>
             
-            <div class="ecoplato-inputs">
-                <input type="text" id="ingrediente1" placeholder="Ingrediente 1 (ej: arroz)">
-                <input type="text" id="ingrediente2" placeholder="Ingrediente 2 (ej: tomate)">
-                <button onclick="buscarReceta()">Buscar Receta</button>
+            <div id="contenedor-ingredientes" class="ecoplato-inputs-list">
+                <div class="input-row">
+                    <input type="text" class="input-ingrediente" list="lista-ingredientes" placeholder="Ingrediente (ej: arroz)" autocomplete="off">
+                </div>
             </div>
+
+            <div class="ecoplato-acciones">
+                <button type="button" class="btn-secundario" onclick="agregarCampoIngrediente()">+ Agregar otro ingrediente</button>
+                <button type="button" onclick="buscarReceta()">Buscar Receta</button>
+            </div>
+
+            <!-- Lista de sugerencias al escribir -->
+            <datalist id="lista-ingredientes">
+                <option value="Arroz"></option>
+                <option value="Acelga"></option>
+                <option value="Atún"></option>
+                <option value="Cebolla"></option>
+                <option value="Choclo"></option>
+                <option value="Fideos"></option>
+                <option value="Huevo"></option>
+                <option value="Leche"></option>
+                <option value="Lechuga"></option>
+                <option value="Lentejas"></option>
+                <option value="Manzana"></option>
+                <option value="Pan"></option>
+                <option value="Papas"></option>
+                <option value="Pollo"></option>
+                <option value="Queso"></option>
+                <option value="Tomate"></option>
+                <option value="Zanahoria"></option>
+            </datalist>
 
             <div id="resultado-receta" style="margin-top: 15px;"></div>
         </section>
 
     </main>
 
-    
+    <script src="main.js"></script>
 </body>
-<script src="main.js"></script>
 </html>
