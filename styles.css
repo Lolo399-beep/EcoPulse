@@ -222,3 +222,12 @@ button:hover {
 #emoji-reciclaje:hover {
     transform: scale(1.2) rotate(5deg);
 }
+
+body {
+  background-image: url('hielo.avif');
+  
+  /* Propiedades opcionales recomendadas para que se ajuste bien */
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+}
