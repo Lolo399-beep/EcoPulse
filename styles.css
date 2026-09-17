@@ -5,11 +5,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-    background-color: #eaf6f6;
-    color: #2c3e50;
-    padding-bottom: 30px;
-}
+
 
 /* Navbar */
 .navbar {
@@ -223,11 +219,15 @@ button:hover {
     transform: scale(1.2) rotate(5deg);
 }
 
+/* --- styles.css Corregido --- */
+
 body {
-  background-image: url('hielo.avif');
-  
-  /* Propiedades opcionales recomendadas para que se ajuste bien */
-  background-size: cover; 
-  background-position: center;
-  background-repeat: no-repeat;
+    background-image: url('hielo.avif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Mantiene el fondo estático al hacer scroll */
+    background-color: #eaf6f6;
+    color: #2c3e50;
+    padding-bottom: 30px;
 }
