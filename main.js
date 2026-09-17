@@ -282,7 +282,7 @@ const baseDatosReciclaje = [
     { emoji: "🍼", palabra: "Pañales", esReciclable: false },
     { emoji: "🍕", palabra: "Caja de pizza manchada con aceite", esReciclable: false },
     { emoji: "☕", palabra: "Taza de café descartable (con plástico interior)", esReciclable: false },
-    { emoji: "🪥", palabra: "Cepillo de dientes", esReciclable: false },
+    //{ emoji: "🪥", palabra: "Cepillo de dientes", esReciclable: false },
     { emoji: "🛍️", palabra: "Bolsa de plástico fina (tipo supermercado)", esReciclable: false },
     { emoji: "🍽️", palabra: "Plato de cerámica roto", esReciclable: false },
     { emoji: "🪞", palabra: "Espejo roto", esReciclable: false },
