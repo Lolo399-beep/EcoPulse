@@ -93,71 +93,142 @@ function responderTrivia(opcionElegida) {
     }
 }
 
-// --- Lógica de EcoPlato (Múltiples Ingredientes) ---
-const recetas = [
-    { ingredientes: ["tomate", "arroz"], nombre: "Arroz Salteado con Tomate", pasos: "Salteá el tomate, sumá el arroz frío y mezclá por 3 min." },
-    { ingredientes: ["pan", "leche"], nombre: "Budín de Pan Express", pasos: "Remojá el pan en leche tibia, agregá azúcar y doralo a la sartén." },
-    { ingredientes: ["papas", "huevo"], nombre: "Tortilla de Papas Cero Desperdicio", pasos: "Cortá las papas cocidas y unilas con huevo batido." },
-    { ingredientes: ["zanahoria", "huevo"], nombre: "Buñuelos Rápidos de Zanahoria", pasos: "Rallá la zanahoria, mezclala con huevo batido y un poco de harina, y cociná a la sartén." },
-    { ingredientes: ["fideos", "queso"], nombre: "Fideos Salteados con Queso", pasos: "Mezclá los fideos que sobraron con queso rallado o en hebras y calentalos a fuego lento." },
-    { ingredientes: ["atún", "arroz", "choclo"], nombre: "Ensalada Completa de Atún", pasos: "Mezclá el arroz cocido con atún, choclo y un hilo de aceite de oliva." }
-];
+// --- Lógica Minijuego: Manotazo Helado (Oso vs Foca) ---
+let objetoActualManotazo = null; // 'pez', 'bomba' o null
+let tiempoSalida = 0;
+let rondaActiva = false;
+let temporizadorAparicion = null;
+let temporizadorIA = null;
 
-function agregarCampoIngrediente() {
-    const contenedor = document.getElementById('contenedor-ingredientes');
-    const nuevaFila = document.createElement('div');
-    nuevaFila.className = 'input-row';
+let puntosPolo = 0;
+let puntosFoca = 0;
+
+function cambiarModoJuego() {
+    const modo = document.getElementById('modo-juego').value;
+    const labelFoca = document.getElementById('label-foca');
     
-    nuevaFila.innerHTML = `
-        <input type="text" class="input-ingrediente" list="lista-ingredientes" placeholder="Otro ingrediente" autocomplete="off">
-        <button type="button" class="btn-eliminar" onclick="this.parentElement.remove()">✕</button>
-    `;
-    
-    contenedor.appendChild(nuevaFila);
-}
+    puntosPolo = 0;
+    puntosFoca = 0;
+    actualizarPuntajes();
 
-function buscarReceta() {
-    const inputs = document.querySelectorAll('.input-ingrediente');
-    const ingredientesIngresados = Array.from(inputs)
-        .map(input => input.value.toLowerCase().trim())
-        .filter(val => val !== "");
-
-    const contenedor = document.getElementById('resultado-receta');
-
-    if (ingredientesIngresados.length === 0) {
-        contenedor.innerHTML = '<p style="color: #c0392b;">Ingresá al menos un ingrediente.</p>';
-        return;
-    }
-
-    // Buscar receta que contenga al menos uno de los ingredientes ingresados
-    const hallada = recetas.find(r => 
-        r.ingredientes.some(ing => ingredientesIngresados.includes(ing))
-    );
-
-    if (hallada) {
-        contenedor.innerHTML = `
-            <div style="background: #e8f5f2; padding: 15px; border-radius: 12px; border-left: 5px solid #238b6b; text-align: left;">
-                <h4 style="color: #238b6b;">🍲 ${hallada.nombre}</h4>
-                <p style="margin: 8px 0;">${hallada.pasos}</p>
-                <button id="btn-salvar-comida" onclick="salvarAlimento()">¡Salvé esta comida! (+5 ❄️)</button>
-            </div>
-        `;
+    if (modo === '2P') {
+        labelFoca.innerText = "🦭 Foca Guatona (L)";
     } else {
-        contenedor.innerHTML = '<p style="color: #397267;">💡 <strong>Idea rápida:</strong> Mezclá tus ingredientes en una sartén con un chorrito de aceite o saltealos al horno.</p>';
+        labelFoca.innerText = "🦭 Foca Guatona (IA)";
     }
 }
 
-function salvarAlimento() {
-    sumarRecompensa(5);
-    registrarTareaCompletada();
-    const btn = document.getElementById('btn-salvar-comida');
-    if (btn) {
-        btn.disabled = true;
-        btn.style.opacity = '0.6';
-        btn.innerText = '¡Comida Salvada!';
-    }
+function actualizarPuntajes() {
+    document.getElementById('score-polo').innerText = `${puntosPolo} pts`;
+    document.getElementById('score-foca').innerText = `${puntosFoca} pts`;
 }
 
+function iniciarRondaManotazo() {
+    const status = document.getElementById('manotazo-status');
+    const agujero = document.getElementById('agujero-pesca');
+    
+    rondaActiva = true;
+    status.innerText = "¡Atención al agua...";
+    agujero.innerText = "🌊";
+    objetoActualManotazo = null;
+
+    clearTimeout(temporizadorAparicion);
+    clearTimeout(temporizadorIA);
+
+    // Tiempo aleatorio entre 1.5 y 4 segundos para que aparezca algo
+    const tiempoEspera = Math.floor(Math.random() * 2500) + 1500;
+
+    temporizadorAparicion = setTimeout(() => {
+        if (!rondaActiva) return;
+
+        // 70% probabilidad de Pez, 30% de Bomba
+        const esPez = Math.random() < 0.7;
+        objetoActualManotazo = esPez ? 'pez' : 'bomba';
+        agujero.innerText = esPez ? "🐟" : "💣";
+        tiempoSalida = Date.now();
+
+        // Si es 1 Jugador, la IA de la foca reacciona
+        const modo = document.getElementById('modo-juego').value;
+        if (modo === '1P') {
+            const tiempoReaccionIA = Math.floor(Math.random() * 400) + 350; // Reacciona entre 350ms y 750ms
+            temporizadorIA = setTimeout(() => {
+                if (rondaActiva) {
+                    manotazoJugador('foca');
+                }
+            }, tiempoReaccionIA);
+        }
+
+    }, tiempoEspera);
+}
+
+function manotazoJugador(jugador) {
+    if (!rondaActiva) return;
+
+    const status = document.getElementById('manotazo-status');
+    const agujero = document.getElementById('agujero-pesca');
+    const elemPata = jugador === 'polo' ? document.getElementById('pata-polo') : document.getElementById('pata-foca');
+
+    // Animación visual de manotazo
+    elemPata.style.transform = "scale(1.4) translateY(-10px)";
+    setTimeout(() => elemPata.style.transform = "scale(1) translateY(0)", 150);
+
+    clearTimeout(temporizadorIA); // Detener la IA si alguien ya golpeó
+
+    if (objetoActualManotazo === 'pez') {
+        const tiempoReaccion = ((Date.now() - tiempoSalida) / 1000).toFixed(2);
+        
+        if (jugador === 'polo') {
+            puntosPolo += 1;
+            sumarRecompensa(5);
+            registrarTareaCompletada();
+            status.innerHTML = `<span style="color: #238b6b;">🐻 ¡Polo atrapó el pez en ${tiempoReaccion}s! (+1 pt)</span>`;
+        } else {
+            puntosFoca += 1;
+            status.innerHTML = `<span style="color: #287d9b;">🦭 ¡La Foca Guatona atrapó el pez en ${tiempoReaccion}s! (+1 pt)</span>`;
+        }
+
+        agujero.innerText = "💥";
+        rondaActiva = false;
+    } 
+    else if (objetoActualManotazo === 'bomba') {
+        if (jugador === 'polo') {
+            puntosPolo = Math.max(0, puntosPolo - 1);
+            status.innerHTML = `<span style="color: #c0392b;">💥 ¡Polo tocó una bomba! (-1 pt)</span>`;
+        } else {
+            puntosFoca = Math.max(0, puntosFoca - 1);
+            status.innerHTML = `<span style="color: #c0392b;">💥 ¡La Foca tocó una bomba! (-1 pt)</span>`;
+        }
+
+        agujero.innerText = "🔥";
+        rondaActiva = false;
+    } 
+    else {
+        // Manotazo a destiempo (antes de que salga el pez/bomba)
+        if (jugador === 'polo') {
+            puntosPolo = Math.max(0, puntosPolo - 1);
+            status.innerHTML = `<span style="color: #c0392b;">❌ ¡Polo se adelantó! (-1 pt)</span>`;
+        } else {
+            puntosFoca = Math.max(0, puntosFoca - 1);
+            status.innerHTML = `<span style="color: #c0392b;">❌ ¡La Foca se adelantó! (-1 pt)</span>`;
+        }
+        rondaActiva = false;
+    }
+
+    actualizarPuntajes();
+}
+
+// Teclas para jugar
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'a' || e.key === 'A') {
+        manotazoJugador('polo');
+    }
+    if (e.key === 'l' || e.key === 'L') {
+        const modo = document.getElementById('modo-juego').value;
+        if (modo === '2P') {
+            manotazoJugador('foca');
+        }
+    }
+});
 // --- Lógica del Sliding Puzzle (3x3 con 0 como hueco) ---
 const ordenGanador = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 let tableroActual = [];
@@ -288,7 +359,7 @@ const baseDatosReciclaje = [
     { emoji: "🪞", palabra: "Espejo roto", esReciclable: false },
     { emoji: "💡", palabra: "Bombilla vieja", esReciclable: false },
     { emoji: "🧸", palabra: "Oso de peluche", esReciclable: false },
-    { emoji: "💻", palabra: "Notebook vieja (Requiere punto especial, no tacho verde)", esReciclable: false }
+    { emoji: "💻", palabra: "Notebook vieja", esReciclable: false }
 ];
 
 let erroresCometidos = 0;
@@ -472,5 +543,155 @@ document.addEventListener('DOMContentLoaded', () => {
     iniciarMemotest();
 });
 
+// --- Minijuego 6: El Salmón Glotón (Snake) ---
+let canvasSalmon, ctxSalmon;
+let salmon = [];
+let copoNieve = { x: 0, y: 0 };
+let dx = 15; 
+let dy = 0; 
+let puntosSalmon = 0;
+let juegoInterval;
+let juegoActivo = false;
+
+const blockSize = 15; // Tamaño de cada "bloque" de la cuadrícula
+const canvasSize = 300;
+
+function iniciarJuegoSalmon() {
+    if (juegoActivo) return;
+    
+    canvasSalmon = document.getElementById('juego-salmon');
+    ctxSalmon = canvasSalmon.getContext('2d');
+    
+    juegoActivo = true;
+    document.getElementById('btn-iniciar-salmon').style.display = 'none';
+    document.getElementById('salmon-status').innerHTML = 'Puntos en esta partida: <span id="salmon-puntos">0</span> ❄️';
+    
+    // Posición inicial del salmón
+    salmon = [
+        { x: 150, y: 150 },
+        { x: 135, y: 150 },
+        { x: 120, y: 150 }
+    ];
+    dx = blockSize;
+    dy = 0;
+    puntosSalmon = 0;
+    
+    generarCopo();
+    document.addEventListener('keydown', cambiarDireccionSalmon);
+    
+    // Velocidad del juego (milisegundos)
+    juegoInterval = setInterval(actualizarJuegoSalmon, 120);
+}
+
+function actualizarJuegoSalmon() {
+    if (verificarColisionSalmon()) {
+        terminarJuegoSalmon();
+        return;
+    }
+    
+    // Calcular nueva posición de la cabeza
+    const cabeza = { x: salmon[0].x + dx, y: salmon[0].y + dy };
+    salmon.unshift(cabeza);
+    
+    // Verificar si el salmón comió el copo
+    if (cabeza.x === copoNieve.x && cabeza.y === copoNieve.y) {
+        puntosSalmon++;
+        document.getElementById('salmon-puntos').innerText = puntosSalmon;
+        
+        // Sumar a la moneda global
+        if (typeof sumarRecompensa === "function") {
+            sumarRecompensa(1);
+        }
+        
+        generarCopo(); // Crear nuevo copo
+    } else {
+        salmon.pop(); // Eliminar la cola si no comió
+    }
+    
+    dibujarJuegoSalmon();
+}
+
+function dibujarJuegoSalmon() {
+    // Limpiar el canvas dejando visible la imagen de fondo de agua
+    ctxSalmon.clearRect(0, 0, canvasSize, canvasSize);
+    
+    // Ajuste general del texto para centrar emojis en los bloques
+    ctxSalmon.font = '14px Arial';
+    ctxSalmon.textAlign = 'center';
+    ctxSalmon.textBaseline = 'middle';
+
+    // Dibujar el copo de nieve
+    ctxSalmon.fillText('❄️', copoNieve.x + blockSize / 2, copoNieve.y + blockSize / 2);
+    
+    // Dibujar el salmón usando emojis de pez
+    salmon.forEach((parte, index) => {
+        // Usa el emoji de pez para la cabeza y para los segmentos del cuerpo
+        const emojiPez = index === 0 ? '🐟' : '🐠'; 
+        ctxSalmon.fillText(emojiPez, parte.x + blockSize / 2, parte.y + blockSize / 2);
+    });
+}
+
+function cambiarDireccionSalmon(event) {
+    const LEFT = 37;
+    const RIGHT = 39;
+    const UP = 38;
+    const DOWN = 40;
+    
+    const tecla = event.keyCode;
+    const yendoArriba = dy === -blockSize;
+    const yendoAbajo = dy === blockSize;
+    const yendoDerecha = dx === blockSize;
+    const yendoIzquierda = dx === -blockSize;
+    
+    if ([LEFT, RIGHT, UP, DOWN].includes(tecla)) {
+        event.preventDefault();
+    }
+    
+    if (tecla === LEFT && !yendoDerecha) { dx = -blockSize; dy = 0; }
+    if (tecla === UP && !yendoAbajo) { dx = 0; dy = -blockSize; }
+    if (tecla === RIGHT && !yendoIzquierda) { dx = blockSize; dy = 0; }
+    if (tecla === DOWN && !yendoArriba) { dx = 0; dy = blockSize; }
+}
+
+function generarCopo() {
+    copoNieve.x = Math.floor(Math.random() * (canvasSize / blockSize)) * blockSize;
+    copoNieve.y = Math.floor(Math.random() * (canvasSize / blockSize)) * blockSize;
+}
+
+function verificarColisionSalmon() {
+    const cabeza = salmon[0];
+    
+    // Chocar contra paredes
+    if (cabeza.x < 0 || cabeza.x >= canvasSize || cabeza.y < 0 || cabeza.y >= canvasSize) {
+        return true;
+    }
+    
+    // Chocar contra sí mismo
+    for (let i = 1; i < salmon.length; i++) {
+        if (cabeza.x === salmon[i].x && cabeza.y === salmon[i].y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function terminarJuegoSalmon() {
+    clearInterval(juegoInterval);
+    juegoActivo = false;
+    document.removeEventListener('keydown', cambiarDireccionSalmon);
+    
+    document.getElementById('btn-iniciar-salmon').innerText = 'Jugar de Nuevo';
+    document.getElementById('btn-iniciar-salmon').style.display = 'inline-block';
+    
+    document.getElementById('salmon-status').innerHTML = `
+        <div style="background: #e8f5f2; border-left: 4px solid #238b6b; padding: 12px; border-radius: 8px;">
+            ¡Juego Terminado! El salmón logró atrapar <strong style="color: #238b6b;">+${puntosSalmon} Copos ❄️</strong>.
+        </div>
+    `;
+    
+    if (puntosSalmon > 0 && typeof registrarTareaCompletada === "function") {
+        registrarTareaCompletada();
+    }
+}
 // Comprobar bloqueo al cargar la página
 document.addEventListener('DOMContentLoaded', verificarBloqueoReciclaje);

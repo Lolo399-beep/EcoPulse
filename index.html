@@ -8,8 +8,7 @@
 </head>
 <body>
 
-    <!-- Navbar -->
-    <header class="navbar">
+  <header class="navbar">
         <h1>🌱 EcoPulse</h1>
         <div class="estadisticas">
             <span>🔥 <strong id="racha-count">0</strong> Días</span>
@@ -21,11 +20,11 @@
     <main class="container">
 
         <!-- Encabezado Principal (Título y Subtítulo Grandes) -->
-        <section class="hero-header" style="text-align: center; margin: 30px 0 40px 0;">
-            <h1 style="font-size: 3.5rem; color: #287d9b; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px;">
-                ECOPULSE
+      <section class="hero-header-full">
+            <h1 style="color: #238b6b; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px;">
+                🌱 ECOPULSE
             </h1>
-            <p style="font-size: 1.3rem; color: #4a5568; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+            <p style="font-size: 1.1rem; color: #4a5568; line-height: 1.6;">
                 Bienvenido a EcoPulse, en esta pagina web tendras a tu fiel amigo Polo, podras jugar una variedad de minijuegos divertidos para obtener copos de nieve y comprarle comida, bañarlo y criarlo en general.
             </p>
         </section>
@@ -90,48 +89,50 @@
             <button class="btn-puzle" id="btn-resolver-puzle" onclick="iniciarPuzle()">Mezclar de Nuevo</button>
         </section>
 
-        <!-- EcoPlato: Minijuego 3 -->
-        <section class="card">
-            <h2>🥗 Minijuego 3: EcoPlato (Recetas según tus comidas)</h2>
-            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
-                <strong>¿De qué trata?</strong> Una herramienta para reducir el desperdicio de alimentos. Ingresá los sobrantes o ingredientes que tenés en la heladera y el sistema te dará una receta práctica para aprovecharlos.
-            </p>
-            <p>Ingresá los sobrantes de tu heladera y descubrí una receta rápida:</p>
-            
-            <div id="contenedor-ingredientes" class="ecoplato-inputs-list">
-                <div class="input-row">
-                    <input type="text" class="input-ingrediente" list="lista-ingredientes" placeholder="Ingrediente (ej: arroz)" autocomplete="off">
-                </div>
-            </div>
+        <!-- Minijuego: Manotazo Helado (Oso vs Foca) -->
+<section class="card">
+    <h2>🐾 Minijuego: Manotazo Helado</h2>
+    
+    <!-- Selector de Modo de Juego -->
+    <div style="margin-bottom: 15px;">
+        <label for="modo-juego" style="font-weight: bold; color: #287d9b;">Modo de juego: </label>
+        <select id="modo-juego" onchange="cambiarModoJuego()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #287d9b;">
+            <option value="1P">1 Jugador (Oso Polo vs Foca IA)</option>
+            <option value="2P">2 Jugadores (Oso Polo vs Foca Guatona)</option>
+        </select>
+    </div>
 
-            <div class="ecoplato-acciones">
-                <button type="button" class="btn-secundario" onclick="agregarCampoIngrediente()">+ Agregar otro ingrediente</button>
-                <button type="button" onclick="buscarReceta()">Buscar Receta</button>
-            </div>
+    <p class="descripcion-juego" style="font-size: 0.85em; color: #555; margin-bottom: 10px;">
+        <strong>Controles:</strong> Oso Polo presiona <kbd style="background:#eee; padding:2px 6px; border-radius:4px; border:1px solid #ccc;">A</kbd> | Foca Guatona presiona <kbd style="background:#eee; padding:2px 6px; border-radius:4px; border:1px solid #ccc;">L</kbd>.<br>
+        ¡Atrapá el pez 🐟 y evitá las bombas 💣!
+    </p>
 
-            <!-- Lista de sugerencias al escribir -->
-            <datalist id="lista-ingredientes">
-                <option value="Arroz"></option>
-                <option value="Acelga"></option>
-                <option value="Atún"></option>
-                <option value="Cebolla"></option>
-                <option value="Choclo"></option>
-                <option value="Fideos"></option>
-                <option value="Huevo"></option>
-                <option value="Leche"></option>
-                <option value="Lechuga"></option>
-                <option value="Lentejas"></option>
-                <option value="Manzana"></option>
-                <option value="Pan"></option>
-                <option value="Papas"></option>
-                <option value="Pollo"></option>
-                <option value="Queso"></option>
-                <option value="Tomate"></option>
-                <option value="Zanahoria"></option>
-            </datalist>
+    <!-- Marcadores y Zona de Juego -->
+    <div style="display: flex; justify-content: space-around; align-items: center; margin: 15px 0;">
+        <!-- Pata de Polo (Oso) -->
+        <div style="text-align: center;">
+            <span style="font-weight: bold; color: #238b6b;">🐻 Oso Polo (A)</span>
+            <div id="pata-polo" style="font-size: 3.5rem; transition: transform 0.1s; cursor: pointer;" onclick="manotazoJugador('polo')">🐾</div>
+            <div id="score-polo" style="font-size: 1.2rem; font-weight: bold; color: #238b6b;">0 pts</div>
+        </div>
+        
+        <!-- Agujero de Pesca -->
+        <div id="agujero-pesca" style="width: 90px; height: 90px; background: #287d9b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 4px solid #ffffff; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+            🌊
+        </div>
 
-            <div id="resultado-receta" style="margin-top: 15px;"></div>
-        </section>
+        <!-- Pata / Aleta de la Foca Anillada -->
+        <div style="text-align: center;">
+            <span style="font-weight: bold; color: #287d9b;" id="label-foca">🦭 Foca Guatona (IA)</span>
+            <div id="pata-foca" style="font-size: 3.5rem; transition: transform 0.1s; cursor: pointer;" onclick="manotazoJugador('foca')">🦭</div>
+            <div id="score-foca" style="font-size: 1.2rem; font-weight: bold; color: #287d9b;">0 pts</div>
+        </div>
+    </div>
+
+    <p id="manotazo-status" style="font-weight: bold; height: 24px; color: #287d9b;"></p>
+    
+    <button class="btn-secundario" onclick="iniciarRondaManotazo()">Ronda Siguiente 🚀</button>
+</section>
 
         <!-- Minijuego 4: ¿Es Reciclable o No? -->
         <section class="card">
@@ -173,6 +174,26 @@
     <p id="memotest-status" style="margin-top: 10px; font-weight: bold;"></p>
     <button class="btn-secundario" id="btn-reiniciar-memotest" onclick="iniciarMemotest()" style="margin-top: 10px;">Reiniciar Memotest</button>
 </section>
+
+<!-- Minijuego 6: Salmón Glotón (Estilo Snake) -->
+<section class="card">
+    <h2>🐟 Minijuego 6: El Salmón Glotón</h2>
+    <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+        <strong>¿De qué trata?</strong> Ayudá al salmón a atrapar los copos de nieve. ¡Cada copo le da 1 punto extra a Polo!<br>
+        <em>Usá las flechas del teclado para moverte.</em>
+    </p>
+    
+    <div style="display: flex; justify-content: center; margin: 15px 0;">
+        <canvas id="juego-salmon" width="300" height="300" style="background-color: #d4ece6; border: 2px solid #238b6b; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></canvas>
+    </div>
+    
+    <p id="salmon-status" style="margin-bottom: 15px; font-weight: bold; color: #287d9b;">
+        Puntos en esta partida: <span id="salmon-puntos">0</span> ❄️
+    </p>
+    
+    <button class="btn-secundario" id="btn-iniciar-salmon" onclick="iniciarJuegoSalmon()">Empezar Juego</button>
+</section>
+
     </main>
 
     <script src="main.js"></script>

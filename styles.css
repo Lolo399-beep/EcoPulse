@@ -232,27 +232,30 @@ body {
     padding-bottom: 30px;
 }
 
-.hero-header {
+.hero-header-full {
     text-align: center;
-    margin: 30px 0 40px 0;
+    padding: 30px 20px;
+    background-color: white;
+    border-radius: 16px;
 }
 
-.hero-header h1 {
-    font-size: 3.5rem;
-    color: #287d9b;
-    font-weight: 800;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
+.hero-header-full h1 {
+    font-size: 3rem;
+    color: #238b6b; /* Color exacto de la barra de navegación */
+    background-color: white;
+    border-radius: 16px;
 }
 
-.hero-header p {
-    font-size: 1.3rem;
+.hero-header-full p {
+    font-size: 1.1rem;
     color: #4a5568;
-    max-width: 800px;
+    max-width: 100%; /* Hace que ocupe todo el ancho disponible del cuadro */
     margin: 0 auto;
     line-height: 1.6;
-}
+    border-radius: 16px;
+    background-color: white;
 
+}
 /* Estilos Minijuego Memotest */
 .memotest-grid {
     display: grid;
@@ -297,4 +300,13 @@ body {
     cursor: default;
     transform: none;
     opacity: 0.8; /* Le da un efecto visual de ya completado */
+}
+
+#juego-salmon {
+    background-image: url('fondo-agua-minijuego6.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #238b6b;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
