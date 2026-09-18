@@ -351,5 +351,126 @@ function verificarReciclaje(respuestaJugador) {
     }
 }
 
+// --- Lógica Minijuego 5: Memotest Ecológico ---
+// Usamos emojis de objetos reciclables: Diario, Botella de vidrio, Caja, Lata, Bolsa de papel, Vaso de plástico
+const parejasReciclables = [
+    { id: 1, texto: "📰" }, { id: 1, texto: "📰" },
+    { id: 2, texto: "🍾" }, { id: 2, texto: "🍾" },
+    { id: 3, texto: "📦" }, { id: 3, texto: "📦" },
+    { id: 4, texto: "🥫" }, { id: 4, texto: "🥫" },
+    { id: 5, texto: "🛍️" }, { id: 5, texto: "🛍️" },
+    { id: 6, texto: "🥤" }, { id: 6, texto: "🥤" }
+];
+
+let cartasMemotest = [];
+let primeraCarta = null;
+let segundaCarta = null;
+let bloqueoTablero = false;
+let parejasEncontradas = 0;
+let memotestCompletadoHoy = localStorage.getItem('ecoMemotestCompletado') === new Date().toLocaleDateString();
+
+function iniciarMemotest() {
+    const contenedor = document.getElementById('memotest-container');
+    const status = document.getElementById('memotest-status');
+    const btnReiniciar = document.getElementById('btn-reiniciar-memotest');
+
+    if (memotestCompletadoHoy) {
+        status.innerHTML = '<span style="color: #238b6b;"> ¡Ya completaste el Memotest de hoy! Volvé mañana.</span>';
+        btnReiniciar.disabled = true;
+        btnReiniciar.style.opacity = '0.5';
+        contenedor.innerHTML = '';
+        return;
+    }
+
+    status.innerText = "¡Encontrá los pares de reciclables!";
+    contenedor.innerHTML = '';
+    primeraCarta = null;
+    segundaCarta = null;
+    bloqueoTablero = false;
+    parejasEncontradas = 0;
+
+    // Duplicar y mezclar cartas aleatoriamente
+    cartasMemotest = [...parejasReciclables].sort(() => Math.random() - 0.5);
+
+    cartasMemotest.forEach((item, index) => {
+        const carta = document.createElement('div');
+        carta.className = 'memocard';
+        carta.dataset.id = item.id;
+        carta.innerText = ""; // Inicialmente vacías (boca abajo)
+        carta.onclick = () => voltearCarta(carta, item);
+        contenedor.appendChild(carta);
+    });
+}
+
+function voltearCarta(carta, item) {
+    // Evitar que se volteen más de 2 cartas a la vez, o que se haga clic en una ya volteada/encontrada
+    if (bloqueoTablero) return;
+    if (carta.classList.contains('volteada') || carta.classList.contains('encontrada')) return;
+
+    // Voltear la carta
+    carta.classList.add('volteada');
+    carta.innerText = item.texto; // Mostrar el emoji
+
+    if (!primeraCarta) {
+        primeraCarta = { carta, item };
+        return;
+    }
+
+    segundaCarta = { carta, item };
+    verificarCoincidencia();
+}
+
+function verificarCoincidencia() {
+    // Comprobar si los IDs de las dos cartas son iguales
+    const esCoincidencia = primeraCarta.item.id === segundaCarta.item.id;
+
+    if (esCoincidencia) {
+        // Son un par correcto
+        primeraCarta.carta.classList.add('encontrada');
+        segundaCarta.carta.classList.add('encontrada');
+        
+        parejasEncontradas++;
+        resetearTurno();
+
+        // Verificar si ganó (si encontró la mitad del total de cartas)
+        if (parejasEncontradas === parejasReciclables.length / 2) {
+            // Nota: Asegúrate de tener estas dos funciones (sumarRecompensa y registrarTareaCompletada) declaradas en tu código principal
+            if(typeof sumarRecompensa === "function") sumarRecompensa(15); 
+            if(typeof registrarTareaCompletada === "function") registrarTareaCompletada(); 
+            
+            memotestCompletadoHoy = true;
+            localStorage.setItem('ecoMemotestCompletado', new Date().toLocaleDateString());
+
+            document.getElementById('memotest-status').innerHTML = `
+                <div style="background: #e8f5f2; border: 2px solid #238b6b; padding: 10px; border-radius: 8px;">
+                     <strong>¡Memotest Superado!</strong> Ganaste <strong>+15 Copos ❄️</strong> y completaste la tarea.
+                </div>
+            `;
+            document.getElementById('btn-reiniciar-memotest').disabled = true;
+        }
+    } else {
+        // No son iguales, bloquear tablero un segundo y volver a esconder
+        bloqueoTablero = true;
+        setTimeout(() => {
+            primeraCarta.carta.classList.remove('volteada');
+            primeraCarta.carta.innerText = "";
+            segundaCarta.carta.classList.remove('volteada');
+            segundaCarta.carta.innerText = "";
+            resetearTurno();
+        }, 1000);
+    }
+}
+
+function resetearTurno() {
+    primeraCarta = null;
+    segundaCarta = null;
+    bloqueoTablero = false;
+}
+
+// Inicializar al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    iniciarMemotest();
+});
+
 // Comprobar bloqueo al cargar la página
 document.addEventListener('DOMContentLoaded', verificarBloqueoReciclaje);

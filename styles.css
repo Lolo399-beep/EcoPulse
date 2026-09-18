@@ -252,3 +252,49 @@ body {
     margin: 0 auto;
     line-height: 1.6;
 }
+
+/* Estilos Minijuego Memotest */
+.memotest-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 70px);
+    gap: 8px;
+    justify-content: center;
+    margin: 15px auto;
+    max-width: 320px;
+}
+
+.memocard {
+    width: 70px;
+    height: 70px;
+    background-color: #287d9b;
+    color: white;
+    font-size: 2.5rem; /* Aumentado para que los emojis se vean bien grandes */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 5px;
+}
+
+.memocard:hover {
+    transform: scale(1.05);
+}
+
+.memocard.volteada {
+    background-color: #ffffff;
+    border: 2px solid #287d9b;
+}
+
+.memocard.encontrada {
+    background-color: #e8f5f2;
+    border: 2px solid #238b6b;
+    cursor: default;
+    transform: none;
+    opacity: 0.8; /* Le da un efecto visual de ya completado */
+}
