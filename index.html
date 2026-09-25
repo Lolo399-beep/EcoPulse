@@ -193,6 +193,27 @@
     
     <button class="btn-secundario" id="btn-iniciar-salmon" onclick="iniciarJuegoSalmon()">Empezar Juego</button>
 </section>
+<!-- Minijuego 7: Salto en el Hielo (Rompe-Hielo) -->
+<section class="card">
+    <h2>❄️ Minijuego 7: Salto en el Hielo</h2>
+    <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+        <strong>¿De qué trata?</strong> El hielo debajo de Polo se romperá en un tiempo aleatorio. ¡Presioná <strong>Espacio</strong> o tocá el botón para saltar justo antes de que el hielo colapse!<br>
+        <em>Si lográs saltar a tiempo ganas <strong>+1 Copo ❄️</strong> y el hielo reaparece tras 1 segundo. Si te caes al agua, ¡se acaba la partida!</em>
+    </p>
+
+    <div style="display: flex; flex-direction: column; align-items: center; margin: 15px 0;">
+        <canvas id="juego-salto-hielo" width="320" height="260" class="canvas-hielo"></canvas>
+        
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <button class="btn-secundario" id="btn-saltar-hielo" onclick="saltarOsoHielo()">🦘 ¡SALTAR! (Espacio)</button>
+            <button id="btn-iniciar-hielo" onclick="iniciarJuegoSaltoHielo()">🎮 Empezar Juego</button>
+        </div>
+    </div>
+
+    <p id="hielo-status" style="font-weight: bold; color: #287d9b;">
+        Puntos: <span id="hielo-puntos">0</span> | Tiempo restante: <span id="hielo-tiempo">--</span>s
+    </p>
+</section>
 
     </main>
 

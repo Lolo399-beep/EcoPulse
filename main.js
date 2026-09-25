@@ -695,3 +695,162 @@ function terminarJuegoSalmon() {
 }
 // Comprobar bloqueo al cargar la página
 document.addEventListener('DOMContentLoaded', verificarBloqueoReciclaje);
+
+// --- Minijuego 7: Salto en el Hielo ---
+let canvasHielo, ctxHielo;
+let puntosHielo = 0;
+let enAireHielo = false;
+let hieloRoto = false;
+let juegoHieloActivo = false;
+let tiempoRestanteHielo = 0;
+let temporizadorHielo = null;
+let animacionHieloFrame = null;
+let duracionSaltoMs = 700; // Tiempo que permanece el oso en el aire
+
+function iniciarJuegoSaltoHielo() {
+    canvasHielo = document.getElementById('juego-salto-hielo');
+    ctxHielo = canvasHielo.getContext('2d');
+
+    puntosHielo = 0;
+    juegoHieloActivo = true;
+    enAireHielo = false;
+    hieloRoto = false;
+
+    // --- SOLUCIÓN ---
+    // Restauramos el HTML original para que los contadores vuelvan a existir
+    document.getElementById('hielo-status').innerHTML = `
+        Puntos: <span id="hielo-puntos">0</span> | Tiempo restante: <span id="hielo-tiempo">--</span>s
+    `;
+    // -----------------
+
+    document.getElementById('hielo-puntos').innerText = puntosHielo;
+    document.getElementById('btn-iniciar-hielo').style.display = 'none';
+    document.getElementById('hielo-status').style.color = '#287d9b';
+
+    iniciarRondaHielo();
+    dibujarJuegoHielo();
+}
+
+function iniciarRondaHielo() {
+    if (!juegoHieloActivo) return;
+
+    hieloRoto = false;
+    // Tiempo aleatorio de cuenta regresiva entre 2 y 6 segundos
+    tiempoRestanteHielo = Math.floor(Math.random() * 5) + 2;
+    document.getElementById('hielo-tiempo').innerText = tiempoRestanteHielo;
+
+    clearInterval(temporizadorHielo);
+    temporizadorHielo = setInterval(() => {
+        tiempoRestanteHielo--;
+        document.getElementById('hielo-tiempo').innerText = Math.max(0, tiempoRestanteHielo);
+
+        if (tiempoRestanteHielo <= 0) {
+            clearInterval(temporizadorHielo);
+            evaluarRondaHielo();
+        }
+    }, 1000);
+}
+
+function saltarOsoHielo() {
+    if (!juegoHieloActivo || enAireHielo) return;
+
+    enAireHielo = true;
+    setTimeout(() => {
+        enAireHielo = false;
+    }, duracionSaltoMs);
+}
+
+function evaluarRondaHielo() {
+    hieloRoto = true;
+
+    if (enAireHielo) {
+        // ¡El Oso estaba saltando! Gana punto y continua
+        puntosHielo++;
+        document.getElementById('hielo-puntos').innerText = puntosHielo;
+
+        if (typeof sumarRecompensa === "function") {
+            sumarRecompensa(1); // Suma 1 copo global por salto exitoso
+        }
+
+        // Tras 1 segundo el hielo reaparece y reinicia la ronda
+        setTimeout(() => {
+            if (juegoHieloActivo) {
+                iniciarRondaHielo();
+            }
+        }, 1000);
+    } else {
+        // El Oso cayó al agua
+        juegoHieloActivo = false;
+        clearInterval(temporizadorHielo);
+
+        if (puntosHielo > 0 && typeof registrarTareaCompletada === "function") {
+            registrarTareaCompletada();
+        }
+
+        document.getElementById('btn-iniciar-hielo').innerText = 'Reintentar 🔄';
+        document.getElementById('btn-iniciar-hielo').style.display = 'inline-block';
+        document.getElementById('hielo-status').innerHTML = `
+            <span style="color: #c0392b;">💥 ¡El hielo se rompió y Polo cayó al agua! Conseguiste <strong>+${puntosHielo} Copos ❄️</strong>.</span>
+        `;
+    }
+}
+
+function dibujarJuegoHielo() {
+    if (!canvasHielo) return;
+
+    ctxHielo.clearRect(0, 0, canvasHielo.width, canvasHielo.height);
+
+    // 1. Cielo / Fondo
+    ctxHielo.fillStyle = "#87ceeb";
+    ctxHielo.fillRect(0, 0, 320, 180);
+
+    // 2. Agua
+    ctxHielo.fillStyle = "#1E90FF";
+    ctxHielo.fillRect(0, 180, 320, 80);
+
+    // Olas simples decorativas
+    ctxHielo.fillStyle = "#4682B4";
+    ctxHielo.fillRect(30, 200, 40, 5);
+    ctxHielo.fillRect(180, 220, 50, 5);
+
+    // 3. Bloque de Hielo (Plataforma)
+    if (!hieloRoto) {
+        ctxHielo.fillStyle = "#E0FFFF";
+        ctxHielo.fillRect(100, 180, 120, 25);
+        ctxHielo.fillStyle = "#B0E0E6";
+        ctxHielo.fillRect(100, 201, 120, 4);
+    } else {
+        // Hielo Roto (Efecto visual de bloques separados)
+        ctxHielo.fillStyle = "#E0FFFF";
+        ctxHielo.fillRect(70, 185, 45, 20);
+        ctxHielo.fillRect(205, 185, 45, 20);
+    }
+
+    // 4. Dibujar al Oso Polo (Emoji/Representación)
+    ctxHielo.font = "40px Arial";
+    ctxHielo.textAlign = "center";
+
+    let osoY = 175; // Posición base sobre el hielo
+    if (enAireHielo) {
+        osoY = 110; // Posición al saltar
+    } else if (hieloRoto) {
+        osoY = 220; // Posición cuando cae al agua
+    }
+
+    ctxHielo.fillText("🐻‍❄️", 160, osoY);
+
+    if (juegoHieloActivo) {
+        requestAnimationFrame(dibujarJuegoHielo);
+    } else if (hieloRoto && !enAireHielo) {
+        // Redibujar cuadro final cuando cae al agua
+        ctxHielo.fillText("🌊", 160, 225);
+    }
+}
+
+// Control mediante la tecla Espacio
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && juegoHieloActivo) {
+        e.preventDefault();
+        saltarOsoHielo();
+    }
+});

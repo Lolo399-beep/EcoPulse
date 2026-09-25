@@ -310,3 +310,22 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+/* --- Estilos Minijuego 7: Salto en el Hielo --- */
+.canvas-hielo {
+    background: #87ceeb;
+    border: 3px solid #238b6b;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    touch-action: manipulation;
+}
+
+#btn-saltar-hielo {
+    background-color: #238b6b;
+    font-size: 1rem;
+    padding: 10px 20px;
+}
+
+#btn-saltar-hielo:active {
+    transform: scale(0.95);
+}
