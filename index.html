@@ -9,7 +9,17 @@
 <body>
 
   <header class="navbar">
-        <h1>🌱 EcoPulse</h1>
+        <!-- Agrupamos el título y el botón del pez -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <h1>🌱 EcoPulse</h1>
+            
+            <!-- Nuevo botón de comida (Pez) -->
+            <button id="btn-comprar-pez" onclick="comprarPez()" style="display: flex; align-items: center; gap: 8px; background-color: #287d9b; color: white; border: none; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s;">
+            <img src="Pez_Image_gb6kqggb6kqggb6k.png" alt="Pez" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                50 ❄️
+            </button>
+        </div>
+
         <div class="estadisticas">
             <span>🔥 <strong id="racha-count">0</strong> Días</span>
             <span>❄️ <strong id="copos-count">10</strong></span>
@@ -30,27 +40,33 @@
         </section>
 
         <!-- Mascota -->
-        <section class="card mascota">
-            <div class="oso">
-                <!-- Oso Polar SVG Integrado -->
-                <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="60" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
-                    <ellipse cx="140" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
-                    <ellipse cx="60" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
-                    <ellipse cx="140" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
-                    <circle cx="100" cy="110" r="75" fill="#FFFFFF" stroke="#287d9b" stroke-width="4"/>
-                    <ellipse cx="100" cy="125" rx="30" ry="22" fill="#E8F4F8" stroke="#287d9b" stroke-width="3"/>
-                    <ellipse cx="100" cy="115" rx="14" ry="10" fill="#287d9b"/>
-                    <circle cx="70" cy="90" r="8" fill="#287d9b"/>
-                    <circle cx="130" cy="90" r="8" fill="#287d9b"/>
-                    <circle cx="72" cy="88" r="2.5" fill="#FFFFFF"/>
-                    <circle cx="132" cy="88" r="2.5" fill="#FFFFFF"/>
-                    <path d="M 90 132 Q 100 140 110 132" stroke="#287d9b" stroke-width="3" stroke-linecap="round" fill="none"/>
-                </svg>
-            </div>
-            <h2>Polo el Oso Polar</h2>
-            <p class="estado" id="estado-polo">¡Polo está feliz en su glaciar!</p>
-        </section>
+<section class="card mascota">
+    <div class="oso" style="position: relative; display: inline-block;">
+        <!-- Oso Polar SVG Integrado -->
+        <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="60" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
+            <ellipse cx="140" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
+            <ellipse cx="60" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
+            <ellipse cx="140" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
+            <circle cx="100" cy="110" r="75" fill="#FFFFFF" stroke="#287d9b" stroke-width="4"/>
+            <ellipse cx="100" cy="125" rx="30" ry="22" fill="#E8F4F8" stroke="#287d9b" stroke-width="3"/>
+            <ellipse cx="100" cy="115" rx="14" ry="10" fill="#287d9b"/>
+            <circle cx="70" cy="90" r="8" fill="#287d9b"/>
+            <circle cx="130" cy="90" r="8" fill="#287d9b"/>
+            <circle cx="72" cy="88" r="2.5" fill="#FFFFFF"/>
+            <circle cx="132" cy="88" r="2.5" fill="#FFFFFF"/>
+            <path d="M 90 132 Q 100 140 110 132" stroke="#287d9b" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </svg>
+        
+        <!-- Emoji de pez (Aparecerá temporalmente en la boca de Polo) -->
+        <div id="pez-boca" style="display: none; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; z-index: 10;">🐟</div>
+    </div>
+    <h2>Polo el Oso Polar</h2>
+    
+    <!-- Porcentaje de Saciedad -->
+    <p style="margin-bottom: 8px; font-weight: bold; color: #287d9b;">Nivel de Saciedad: <span id="porcentaje-panza">100</span>%</p>
+    <p class="estado" id="estado-polo">¡Polo está feliz en su glaciar!</p>
+</section>
 
         <!-- Misión Diaria: Minijuego 1 -->
         <section class="card">

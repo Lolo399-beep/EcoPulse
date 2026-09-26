@@ -854,3 +854,91 @@ document.addEventListener('keydown', (e) => {
         saltarOsoHielo();
     }
 });
+
+// --- Lógica de Saciedad de Polo ---
+let panzaOso = localStorage.getItem('ecoPanza') ? parseInt(localStorage.getItem('ecoPanza')) : 100;
+let osoComiendo = false;
+
+function actualizarEstadoPanza() {
+    document.getElementById('porcentaje-panza').innerText = panzaOso;
+    const estadoPolo = document.getElementById('estado-polo');
+    
+    // Alerta de hambre si tiene 50% o menos
+    if (panzaOso <= 50) {
+        estadoPolo.innerText = '¡Polo tiene mucha hambre! 🐻‍❄️🍽️';
+        estadoPolo.style.color = '#c0392b';
+        estadoPolo.style.backgroundColor = '#fadbd8';
+    } else {
+        estadoPolo.innerText = '¡Polo está feliz en su glaciar!';
+        estadoPolo.style.color = '#238b6b';
+        estadoPolo.style.backgroundColor = '#f0fdf4';
+    }
+    
+    localStorage.setItem('ecoPanza', panzaOso);
+    actualizarBotonPez(); // Validar si el botón de comida debe habilitarse
+}
+
+// Descuenta 1% a la panza cada 5 segundos (puedes ajustar el intervalo)
+setInterval(() => {
+    if (panzaOso > 0 && !osoComiendo) {
+        panzaOso -= 1;
+        actualizarEstadoPanza();
+    }
+}, 5000);
+
+// Función para habilitar o deshabilitar el botón del pez
+function actualizarBotonPez() {
+    const btnPez = document.getElementById('btn-comprar-pez');
+    if (btnPez) {
+        // Habilitar solo si hay copos suficientes, Polo no está lleno al 100% y no está comiendo
+        if (copos >= 50 && !osoComiendo && panzaOso < 100) {
+            btnPez.disabled = false;
+            btnPez.style.opacity = '1';
+            btnPez.style.cursor = 'pointer';
+        } else {
+            btnPez.disabled = true;
+            btnPez.style.opacity = '0.5';
+            btnPez.style.cursor = 'not-allowed';
+        }
+    }
+}
+
+// Función al clickear el botón del pez
+function comprarPez() {
+    if (copos >= 50 && !osoComiendo && panzaOso < 100) {
+        // Descontar copos y bloquear el oso
+        copos -= 50; 
+        osoComiendo = true;
+        
+        localStorage.setItem('ecoCopos', copos);
+        document.getElementById('copos-count').innerText = copos;
+        actualizarBotonPez(); // Desactiva el botón inmediatamente
+        
+        const pezBoca = document.getElementById('pez-boca');
+        const estadoPolo = document.getElementById('estado-polo');
+        
+        // Mostrar animación (pez en la boca)
+        if (pezBoca) pezBoca.style.display = 'block';
+        if (estadoPolo) {
+            estadoPolo.innerText = 'Polo está comiendo... 🐟😋';
+            estadoPolo.style.color = '#287d9b';
+            estadoPolo.style.backgroundColor = '#e8f4f8';
+        }
+        
+        // Esperar 5 segundos antes de aplicar la comida
+        setTimeout(() => {
+            if (pezBoca) pezBoca.style.display = 'none';
+            
+            // Sumar 50% al nivel de saciedad (máximo 100%)
+            panzaOso = Math.min(100, panzaOso + 50);
+            osoComiendo = false;
+            
+            actualizarEstadoPanza(); // Actualizar textos y barra
+        }, 15000);
+    }
+}
+
+// Llamar al inicio para setear el estado guardado
+document.addEventListener('DOMContentLoaded', () => {
+    actualizarEstadoPanza();
+});
