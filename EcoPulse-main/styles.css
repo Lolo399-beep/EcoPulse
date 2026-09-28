@@ -1,0 +1,331 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.navbar h1 {
+    color: #238b6b;
+    font-size: 1.5rem;
+}
+
+.estadisticas {
+    display: flex;
+    gap: 15px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    background: #e8f5f2;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #287d9b;
+}
+
+/* Contenedor Principal */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tarjetas Generales */
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    text-align: center;
+}
+
+.card h2 {
+    color: #238b6b;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.card p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+/* Seccion Mascota */
+.mascota .oso {
+    margin: 10px 0;
+}
+
+.mascota .estado {
+    background: #f0fdf4;
+    color: #238b6b;
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* Inputs y Botones */
+input[type="number"], input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    width: 100%;
+}
+
+button {
+    background-color: #238b6b;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #1b6d54;
+}
+
+.btn-secundario {
+    background-color: #287d9b;
+}
+
+.btn-secundario:hover {
+    background-color: #1f6179;
+}
+
+.mision-input {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.mision-input input {
+    width: 60%;
+}
+
+/* Estilos EcoPlato */
+.ecoplato-inputs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto 15px auto;
+}
+
+.input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+}
+
+.ecoplato-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Estilos Sliding Puzzle */
+.puzle-card {
+    text-align: center;
+}
+
+.puzle-container {
+    display: grid;
+    grid-template-columns: repeat(3, 75px);
+    grid-template-rows: repeat(3, 75px);
+    gap: 6px;
+    justify-content: center;
+    margin: 15px auto;
+    width: max-content;
+    padding: 10px;
+    background: #d4ece6;
+    border-radius: 12px;
+}
+
+.puzle-piece {
+    width: 75px;
+    height: 75px;
+    background-color: #238b6b;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s ease-in-out, background 0.2s;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.puzle-piece:hover:not(.empty) {
+    transform: scale(1.04);
+    background-color: #287d9b;
+}
+
+.puzle-piece.empty {
+    background-color: transparent;
+    border: 2px dashed #b2dfdb;
+    box-shadow: none;
+    cursor: default;
+}
+
+.btn-puzle {
+    background: #287d9b;
+}
+
+.btn-puzle:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Animación para el minijuego 4 */
+#emoji-reciclaje {
+    transition: transform 0.3s ease;
+}
+#emoji-reciclaje:hover {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* --- styles.css Corregido --- */
+
+body {
+    background-image: url('hielo.avif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Mantiene el fondo estático al hacer scroll */
+    background-color: #eaf6f6;
+    color: #2c3e50;
+    padding-bottom: 30px;
+}
+
+.hero-header-full {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.hero-header-full h1 {
+    font-size: 3rem;
+    color: #238b6b; /* Color exacto de la barra de navegación */
+    background-color: white;
+    border-radius: 16px;
+}
+
+.hero-header-full p {
+    font-size: 1.1rem;
+    color: #4a5568;
+    max-width: 100%; /* Hace que ocupe todo el ancho disponible del cuadro */
+    margin: 0 auto;
+    line-height: 1.6;
+    border-radius: 16px;
+    background-color: white;
+
+}
+/* Estilos Minijuego Memotest */
+.memotest-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 70px);
+    gap: 8px;
+    justify-content: center;
+    margin: 15px auto;
+    max-width: 320px;
+}
+
+.memocard {
+    width: 70px;
+    height: 70px;
+    background-color: #287d9b;
+    color: white;
+    font-size: 2.5rem; /* Aumentado para que los emojis se vean bien grandes */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 5px;
+}
+
+.memocard:hover {
+    transform: scale(1.05);
+}
+
+.memocard.volteada {
+    background-color: #ffffff;
+    border: 2px solid #287d9b;
+}
+
+.memocard.encontrada {
+    background-color: #e8f5f2;
+    border: 2px solid #238b6b;
+    cursor: default;
+    transform: none;
+    opacity: 0.8; /* Le da un efecto visual de ya completado */
+}
+
+#juego-salmon {
+    background-image: url('fondo-agua-minijuego6.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #238b6b;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- Estilos Minijuego 7: Salto en el Hielo --- */
+.canvas-hielo {
+    background: #87ceeb;
+    border: 3px solid #238b6b;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    touch-action: manipulation;
+}
+
+#btn-saltar-hielo {
+    background-color: #238b6b;
+    font-size: 1rem;
+    padding: 10px 20px;
+}
+
+#btn-saltar-hielo:active {
+    transform: scale(0.95);
+}

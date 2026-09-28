@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPulse - Cuidemos a Polo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="navbar">
+        <!-- Agrupamos el título y el botón del pez -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <h1>🌱 EcoPulse</h1>
+            
+            <!-- Nuevo botón de comida (Pez) -->
+            <button id="btn-comprar-pez" onclick="comprarPez()" style="display: flex; align-items: center; gap: 8px; background-color: #287d9b; color: white; border: none; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s;">
+            <img src="Pez_Image_gb6kqggb6kqggb6k.png" alt="Pez" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                50 ❄️
+            </button>
+        </div>
+
+        <div class="estadisticas">
+            <span>🔥 <strong id="racha-count">0</strong> Días</span>
+            <span>❄️ <strong id="copos-count">10</strong></span>
+            <span>✅ <strong id="tareas-count">0</strong> Hechas</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Encabezado Principal (Título y Subtítulo Grandes) -->
+      <section class="hero-header-full">
+            <h1 style="color: #238b6b; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px;">
+                🌱 ECOPULSE
+            </h1>
+            <p style="font-size: 1.1rem; color: #4a5568; line-height: 1.6;">
+                Bienvenido a EcoPulse, en esta pagina web tendras a tu fiel amigo Polo, podras jugar una variedad de minijuegos divertidos para obtener copos de nieve y comprarle comida, bañarlo y criarlo en general.
+            </p>
+        </section>
+
+        <!-- Mascota -->
+<section class="card mascota">
+    <div class="oso" style="position: relative; display: inline-block;">
+        <!-- Oso Polar SVG Integrado -->
+        <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="60" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
+            <ellipse cx="140" cy="50" rx="20" ry="20" fill="#E8F4F8" stroke="#287d9b" stroke-width="4"/>
+            <ellipse cx="60" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
+            <ellipse cx="140" cy="50" rx="10" ry="10" fill="#FFC0CB"/>
+            <circle cx="100" cy="110" r="75" fill="#FFFFFF" stroke="#287d9b" stroke-width="4"/>
+            <ellipse cx="100" cy="125" rx="30" ry="22" fill="#E8F4F8" stroke="#287d9b" stroke-width="3"/>
+            <ellipse cx="100" cy="115" rx="14" ry="10" fill="#287d9b"/>
+            <circle cx="70" cy="90" r="8" fill="#287d9b"/>
+            <circle cx="130" cy="90" r="8" fill="#287d9b"/>
+            <circle cx="72" cy="88" r="2.5" fill="#FFFFFF"/>
+            <circle cx="132" cy="88" r="2.5" fill="#FFFFFF"/>
+            <path d="M 90 132 Q 100 140 110 132" stroke="#287d9b" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </svg>
+        
+        <!-- Emoji de pez (Aparecerá temporalmente en la boca de Polo) -->
+        <div id="pez-boca" style="display: none; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; z-index: 10;">🐟</div>
+    </div>
+    <h2>Polo el Oso Polar</h2>
+    
+    <!-- Porcentaje de Saciedad -->
+    <p style="margin-bottom: 8px; font-weight: bold; color: #287d9b;">Nivel de Saciedad: <span id="porcentaje-panza">100</span>%</p>
+    <p class="estado" id="estado-polo">¡Polo está feliz en su glaciar!</p>
+</section>
+
+        <!-- Misión Diaria: Minijuego 1 -->
+        <section class="card">
+            <h2>🌍 Minijuego 1: El Triángulo del 1 al 7</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿Qué es el triángulo 1-7?</strong> Los números dentro del triángulo de reciclaje (Código de Identificación de Resinas del 1 al 7) indican el tipo de plástico del que está hecho un envase (como PET, HDPE, PVC, etc.) y cuán fácil o complejo es reciclarlo.<br>
+                <strong>¿Cómo se juega?</strong> Buscá un envase plástico en tu casa, identificá su número e ingresalo a continuación para resolver preguntas de <em>Verdadero/Falso</em> o <em>Multiple Choice</em> según el plástico detectado.
+            </p>
+            
+            <p><strong>Buscá un plástico en tu casa e ingresá el número del triángulo (1 al 7):</strong></p>
+            <div class="mision-input">
+                <input type="number" id="recycle-code" min="1" max="7" placeholder="Ej: 1">
+                <button id="btn-mision" onclick="iniciarTrivia()">Verificar</button>
+            </div>
+
+            <p id="feedback-mision"></p>
+
+            <!-- Bloque Trivia -->
+            <div id="bloque-trivia" style="display: none; margin-top: 15px;">
+                <p id="pregunta-trivia" style="font-weight: bold; color: #287d9b;"></p>
+                <div id="opciones-trivia" style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;"></div>
+            </div>
+        </section>
+
+        <!-- Sliding Puzzle Diario: Minijuego 2 -->
+        <section class="card puzle-card">
+            <h2>🧩 Minijuego 2: Sliding Puzzle (Ordenar las Piezas)</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿De qué trata?</strong> Es un rompecabezas deslizante. Tenés que ordenar las piezas del 1 al 8 utilizando el espacio vacío para moverlas a su posición correcta.
+            </p>
+            <p>Deslizá las fichas al espacio vacío para ordenarlas de 1 a 8 y ganá <strong>+10 Copos ❄️</strong>.</p>
+            
+            <div class="puzle-container" id="puzle-grid"></div>
+
+            <p id="puzle-status"></p>
+            <button class="btn-puzle" id="btn-resolver-puzle" onclick="iniciarPuzle()">Mezclar de Nuevo</button>
+        </section>
+
+        <!-- Minijuego: Manotazo Helado (Oso vs Foca) -->
+<section class="card">
+    <h2>🐾 Minijuego: Manotazo Helado</h2>
+    
+    <!-- Selector de Modo de Juego -->
+    <div style="margin-bottom: 15px;">
+        <label for="modo-juego" style="font-weight: bold; color: #287d9b;">Modo de juego: </label>
+        <select id="modo-juego" onchange="cambiarModoJuego()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #287d9b;">
+            <option value="1P">1 Jugador (Oso Polo vs Foca IA)</option>
+            <option value="2P">2 Jugadores (Oso Polo vs Foca Guatona)</option>
+        </select>
+    </div>
+
+    <p class="descripcion-juego" style="font-size: 0.85em; color: #555; margin-bottom: 10px;">
+        <strong>Controles:</strong> Oso Polo presiona <kbd style="background:#eee; padding:2px 6px; border-radius:4px; border:1px solid #ccc;">A</kbd> | Foca Guatona presiona <kbd style="background:#eee; padding:2px 6px; border-radius:4px; border:1px solid #ccc;">L</kbd>.<br>
+        ¡Atrapá el pez 🐟 y evitá las bombas 💣!
+    </p>
+
+    <!-- Marcadores y Zona de Juego -->
+    <div style="display: flex; justify-content: space-around; align-items: center; margin: 15px 0;">
+        <!-- Pata de Polo (Oso) -->
+        <div style="text-align: center;">
+            <span style="font-weight: bold; color: #238b6b;">🐻 Oso Polo (A)</span>
+            <div id="pata-polo" style="font-size: 3.5rem; transition: transform 0.1s; cursor: pointer;" onclick="manotazoJugador('polo')">🐾</div>
+            <div id="score-polo" style="font-size: 1.2rem; font-weight: bold; color: #238b6b;">0 pts</div>
+        </div>
+        
+        <!-- Agujero de Pesca -->
+        <div id="agujero-pesca" style="width: 90px; height: 90px; background: #287d9b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 4px solid #ffffff; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+            🌊
+        </div>
+
+        <!-- Pata / Aleta de la Foca Anillada -->
+        <div style="text-align: center;">
+            <span style="font-weight: bold; color: #287d9b;" id="label-foca">🦭 Foca Guatona (IA)</span>
+            <div id="pata-foca" style="font-size: 3.5rem; transition: transform 0.1s; cursor: pointer;" onclick="manotazoJugador('foca')">🦭</div>
+            <div id="score-foca" style="font-size: 1.2rem; font-weight: bold; color: #287d9b;">0 pts</div>
+        </div>
+    </div>
+
+    <p id="manotazo-status" style="font-weight: bold; height: 24px; color: #287d9b;"></p>
+    
+    <button class="btn-secundario" onclick="iniciarRondaManotazo()">Ronda Siguiente 🚀</button>
+</section>
+
+        <!-- Minijuego 4: ¿Es Reciclable o No? -->
+        <section class="card">
+            <h2>♻️ Minijuego 4: ¿Es Reciclable o No?</h2>
+            <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+                <strong>¿De qué trata?</strong> Te mostraremos distintos objetos. Adiviná si van a la bolsa verde (reciclables) o al tacho negro (basura).<br>
+                ⚠️ <em>Cuidado: Si te equivocás 5 veces, Polo se cansará y deberás esperar a mañana para volver a jugar.</em>
+            </p>
+            
+            <div id="pantalla-juego-reciclaje" style="margin-top: 15px; text-align: center;">
+                <button id="btn-iniciar-reciclaje" onclick="iniciarJuegoReciclaje()">Empezar a jugar</button>
+                <p id="estado-reciclaje" style="margin-top: 10px; font-weight: bold;"></p>
+                
+                <div id="zona-juego-reciclaje" style="display: none; margin-top: 20px;">
+                    <div style="font-size: 4rem; margin-bottom: 10px;" id="emoji-reciclaje">❓</div>
+                    <h3 id="palabra-reciclaje" style="color: #287d9b; margin-bottom: 20px;">Objeto</h3>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button onclick="verificarReciclaje(true)" style="background-color: #238b6b;">✅ Reciclable</button>
+                        <button onclick="verificarReciclaje(false)" style="background-color: #c0392b;">❌ No Reciclable</button>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">Errores permitidos: <span id="vidas-reciclaje" style="color: #e74c3c; font-weight: bold;">5</span></p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Minijuego 5: Memotest Reciclable -->
+<section class="card">
+    <h2>Minijuego 5: Memotest Ecológico</h2>
+    <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+        <strong>¿Qué son los objetos reciclables?</strong> Son aquellos materiales que, una vez utilizados, pueden ser procesados y transformados en nuevos productos. ¡Esto evita que se conviertan en basura y ayuda a cuidar nuestro planeta! (Ejemplos: cartón, papel, vidrio, metales y plásticos).<br><br>
+        <strong>¿De qué trata?</strong> Encontrá los pares de emojis de objetos reciclables que están escondidos.<br>
+        <em>Completá el memotest y ganá <strong>+15 Copos ❄️</strong>.</em>
+    </p>
+    
+    <div id="memotest-container" class="memotest-grid"></div>
+    
+    <p id="memotest-status" style="margin-top: 10px; font-weight: bold;"></p>
+    <button class="btn-secundario" id="btn-reiniciar-memotest" onclick="iniciarMemotest()" style="margin-top: 10px;">Reiniciar Memotest</button>
+</section>
+
+<!-- Minijuego 6: Salmón Glotón (Estilo Snake) -->
+<section class="card">
+    <h2>🐟 Minijuego 6: El Salmón Glotón</h2>
+    <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+        <strong>¿De qué trata?</strong> Ayudá al salmón a atrapar los copos de nieve. ¡Cada copo le da 1 punto extra a Polo!<br>
+        <em>Usá las flechas del teclado para moverte.</em>
+    </p>
+    
+    <div style="display: flex; justify-content: center; margin: 15px 0;">
+        <canvas id="juego-salmon" width="300" height="300" style="background-color: #d4ece6; border: 2px solid #238b6b; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></canvas>
+    </div>
+    
+    <p id="salmon-status" style="margin-bottom: 15px; font-weight: bold; color: #287d9b;">
+        Puntos en esta partida: <span id="salmon-puntos">0</span> ❄️
+    </p>
+    
+    <button class="btn-secundario" id="btn-iniciar-salmon" onclick="iniciarJuegoSalmon()">Empezar Juego</button>
+</section>
+<!-- Minijuego 7: Salto en el Hielo (Rompe-Hielo) -->
+<section class="card">
+    <h2>❄️ Minijuego 7: Salto en el Hielo</h2>
+    <p class="descripcion-juego" style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+        <strong>¿De qué trata?</strong> El hielo debajo de Polo se romperá en un tiempo aleatorio. ¡Presioná <strong>Espacio</strong> o tocá el botón para saltar justo antes de que el hielo colapse!<br>
+        <em>Si lográs saltar a tiempo ganas <strong>+1 Copo ❄️</strong> y el hielo reaparece tras 1 segundo. Si te caes al agua, ¡se acaba la partida!</em>
+    </p>
+
+    <div style="display: flex; flex-direction: column; align-items: center; margin: 15px 0;">
+        <canvas id="juego-salto-hielo" width="320" height="260" class="canvas-hielo"></canvas>
+        
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <button class="btn-secundario" id="btn-saltar-hielo" onclick="saltarOsoHielo()">🦘 ¡SALTAR! (Espacio)</button>
+            <button id="btn-iniciar-hielo" onclick="iniciarJuegoSaltoHielo()">🎮 Empezar Juego</button>
+        </div>
+    </div>
+
+    <p id="hielo-status" style="font-weight: bold; color: #287d9b;">
+        Puntos: <span id="hielo-puntos">0</span> | Tiempo restante: <span id="hielo-tiempo">--</span>s
+    </p>
+</section>
+
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
